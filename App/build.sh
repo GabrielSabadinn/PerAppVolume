@@ -1,7 +1,10 @@
 #!/bin/zsh
 set -euo pipefail
 cd "$(dirname "$0")"
-[[ -f Local.xcconfig ]] || echo "PER_APP_VOLUME_TOKEN = $(openssl rand -hex 32)" > Local.xcconfig
+if [[ ! -f Local.xcconfig ]]; then
+  TEAM="$(defaults read com.apple.dt.Xcode IDEProvisioningTeamManagerLastSelectedTeamID 2>/dev/null || true)"
+  printf 'PER_APP_VOLUME_TOKEN = %s\nDEVELOPMENT_TEAM = %s\n' "$(openssl rand -hex 32)" "$TEAM" > Local.xcconfig
+fi
 xcodegen generate >/dev/null
 xcodebuild -project PerAppVolume.xcodeproj -scheme PerAppVolume -configuration Release -derivedDataPath .build/xcode build -allowProvisioningUpdates 2>&1 | grep -E 'error:|BUILD (SUCCEEDED|FAILED)' | grep -v CoreSimulator | sort -u
 [[ ${pipestatus[1]} -eq 0 ]]
