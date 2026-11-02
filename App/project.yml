@@ -1,0 +1,86 @@
+name: PerAppVolume
+options:
+  bundleIdPrefix: com.gabi
+  deploymentTarget:
+    macOS: "26.0"
+  xcodeVersion: "26.2"
+  createIntermediateGroups: true
+  generateEmptyDirectories: true
+packages:
+  AudioEngine:
+    path: .
+settings:
+  base:
+    SWIFT_VERSION: "5"
+    MACOSX_DEPLOYMENT_TARGET: "26.0"
+    CODE_SIGN_STYLE: Automatic
+    CODE_SIGN_IDENTITY: "Apple Development"
+    DEVELOPMENT_TEAM: 9NH95M2M8W
+    ENABLE_HARDENED_RUNTIME: false
+    GENERATE_INFOPLIST_FILE: false
+targets:
+  PerAppVolume:
+    type: application
+    platform: macOS
+    configFiles:
+      Debug: Local.xcconfig
+      Release: Local.xcconfig
+    sources:
+      - path: Sources/PerAppVolume
+    dependencies:
+      - package: AudioEngine
+        product: AudioEngine
+      - target: SafariExtension
+        embed: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.gabi.perappvolume
+        PRODUCT_NAME: PerAppVolume
+    info:
+      path: Sources/PerAppVolume/Info.plist
+      properties:
+        CFBundleIdentifier: com.gabi.perappvolume
+        CFBundleName: PerAppVolume
+        CFBundleDisplayName: PerAppVolume
+        CFBundlePackageType: APPL
+        CFBundleShortVersionString: "0.2"
+        CFBundleVersion: "2"
+        LSMinimumSystemVersion: "26.0"
+        LSUIElement: true
+        NSHighResolutionCapable: true
+        NSAudioCaptureUsageDescription: "PerAppVolume ajusta o volume de cada app individualmente. Nenhum áudio é gravado ou enviado."
+        PerAppVolumeToken: $(PER_APP_VOLUME_TOKEN)
+    entitlements:
+      path: Sources/PerAppVolume/PerAppVolume.entitlements
+      properties: {}
+  SafariExtension:
+    type: app-extension
+    platform: macOS
+    configFiles:
+      Debug: Local.xcconfig
+      Release: Local.xcconfig
+    sources:
+      - path: SafariExtension
+      - path: Extension
+        buildPhase: resources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.gabi.perappvolume.safari
+        PRODUCT_NAME: SafariExtension
+    info:
+      path: SafariExtension/Info.plist
+      properties:
+        CFBundleIdentifier: com.gabi.perappvolume.safari
+        CFBundleName: SafariExtension
+        CFBundleDisplayName: PerAppVolume
+        CFBundlePackageType: XPC!
+        CFBundleShortVersionString: "0.2"
+        CFBundleVersion: "2"
+        PerAppVolumeToken: $(PER_APP_VOLUME_TOKEN)
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.Safari.web-extension
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).SafariWebExtensionHandler
+    entitlements:
+      path: SafariExtension/SafariExtension.entitlements
+      properties:
+        com.apple.security.app-sandbox: true
