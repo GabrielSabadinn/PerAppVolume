@@ -11,6 +11,7 @@
   [![Core Audio](https://img.shields.io/badge/Core%20Audio-process%20taps-4B5563?style=flat-square)](https://developer.apple.com/documentation/coreaudio)
   [![Safari](https://img.shields.io/badge/Safari-web%20extension-006CFF?style=flat-square&logo=safari&logoColor=white)](https://developer.apple.com/documentation/safariservices/safari_web_extensions)
   [![Platform](https://img.shields.io/badge/platform-macOS%2026%2B-000000?style=flat-square&logo=apple)](https://www.apple.com/macos)
+  [![License](https://img.shields.io/badge/license-PolyForm%20Noncommercial-8B5CF6?style=flat-square)](LICENSE)
 </div>
 
 ---
@@ -161,3 +162,9 @@ Spike/                        the original proof of concept: tap one process, ap
 - Web pages that produce sound only through the Web Audio API, without a media element, cannot be controlled per tab. The browser row still works.
 - Protected content players may deliver silence when tapped; those apps are excluded by default.
 - Chrome and Brave are not wired yet. The extension code is browser agnostic, but Chrome needs its own manifest and a pairing flow for the bridge token.
+
+## License
+
+PerAppVolume is released under the [PolyForm Noncommercial License 1.0.0](LICENSE). You are free to read, run, modify and share it for personal and other noncommercial purposes. Any commercial use requires written permission from the author.
+
+Copyright Gabriel Sabadin.
